@@ -57,13 +57,13 @@ body {
   left: 0;
   pointer-events: none;
   z-index: 9999;
-  width: 18px;
-  height: 18px;
-  margin-left: -9px;
-  margin-top: -9px;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  margin-top: -8px;
   border-radius: 50%;
-  background: rgba(233, 228, 220, 0.35);
-  border: 1px solid rgba(233, 228, 220, 0.6);
+  background: rgba(233, 228, 220, 0.9);
+  border: 1px solid rgba(233, 228, 220, 0.95);
   mix-blend-mode: difference;
   transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
               height 0.3s cubic-bezier(0.22, 1, 0.36, 1),
@@ -77,8 +77,8 @@ body {
   height: 28px;
   margin-left: -14px;
   margin-top: -14px;
-  background: rgba(201, 178, 133, 0.25);
-  border-color: rgba(201, 178, 133, 0.85);
+  background: rgba(201, 178, 133, 0.85);
+  border-color: rgba(201, 178, 133, 0.95);
 }
 
 /* Show default cursor on mobile/touch */
@@ -177,6 +177,22 @@ body::before {
   display: grid;
   grid-template-rows: 1fr auto;
   position: relative;
+  overflow: hidden;
+}
+
+#hero-bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+}
+
+.hero > *:not(canvas) {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-mark {
@@ -298,6 +314,7 @@ body::before {
   justify-content: space-between;
   align-items: flex-end;
   margin-top: auto;
+  margin-bottom: 80px;
   padding-top: 60px;
   border-top: 1px solid var(--line);
   font-family: var(--mono);
@@ -322,28 +339,54 @@ body::before {
 
 .scroll-cue {
   position: absolute;
-  bottom: 40px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  color: var(--text-faint);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  animation: pulse 2.5s ease-in-out infinite;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text-dim);
+  opacity: 0.6;
+  transition: opacity 0.4s, color 0.4s;
+  z-index: 5;
 }
-.scroll-cue::after {
-  content: '';
+.scroll-cue:hover {
+  opacity: 1;
+  color: var(--accent);
+}
+.scroll-cue-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+.scroll-cue-line {
+  display: block;
   width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, var(--accent), transparent);
+  height: 36px;
+  background: linear-gradient(to bottom, currentColor 0%, currentColor 40%, transparent 100%);
+  animation: scrollLine 2.4s ease-in-out infinite;
+  transform-origin: top;
 }
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
-  50% { opacity: 1; transform: translateX(-50%) translateY(6px); }
+.scroll-cue-arrow {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(45deg);
+  margin-top: -4px;
+  animation: scrollArrow 2.4s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0%, 100% { transform: scaleY(0.5); opacity: 0.4; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+@keyframes scrollArrow {
+  0%, 100% { transform: rotate(45deg) translate(-3px, -3px); opacity: 0.4; }
+  50% { transform: rotate(45deg) translate(0, 0); opacity: 1; }
 }
 
 /* ============================================
@@ -558,6 +601,7 @@ body::before {
     <a href="#methodology">Methodology</a>
     <a href="#design">Design</a>
     <a href="#notes">Notes</a>
+    <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
   </div>
 </nav>
@@ -566,6 +610,7 @@ body::before {
      HERO
 ============================================ -->
 <section class="hero">
+  <canvas id="hero-bg-canvas"></canvas>
   <div class="hero-mark">PORTFOLIO · 2026</div>
   
   <div class="hero-main">
@@ -597,7 +642,11 @@ body::before {
     </div>
   </div>
   
-  <div class="scroll-cue">SCROLL</div>
+  <a href="#about" class="scroll-cue" aria-label="向下滚动">
+    <span class="scroll-cue-label">SCROLL</span>
+    <span class="scroll-cue-line"></span>
+    <span class="scroll-cue-arrow"></span>
+  </a>
 </section>
 
 <!-- ============================================
@@ -2422,10 +2471,427 @@ body::before {
   text-transform: uppercase;
   border-top: 1px solid var(--line-soft);
 }
+
+/* ============================================
+   SKILLS / SELF ASSESSMENT
+============================================ */
+.skills-intro {
+  max-width: 720px;
+  margin-bottom: 80px;
+  font-family: var(--serif-cn);
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--text);
+  font-weight: 300;
+}
+.skills-intro em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px 80px;
+}
+@media (max-width: 900px) {
+  .skills-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+.skill-block {
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.skill-block-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+.skill-block-title {
+  font-family: var(--serif-cn);
+  font-size: 18px;
+  color: var(--text);
+  font-weight: 400;
+  margin-bottom: 16px;
+  letter-spacing: 0.04em;
+}
+.skill-block-title .en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-left: 10px;
+  font-weight: 300;
+}
+.skill-level-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+.skill-level-bar i {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--line);
+}
+.skill-level-bar i.on { background: var(--accent); }
+
+.skill-desc {
+  font-family: var(--serif-cn);
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+.skill-desc em {
+  color: var(--text);
+  font-style: normal;
+}
+.skill-desc strong {
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.ai-skills {
+  grid-column: 1 / -1;
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--accent);
+}
+.ai-skills-header {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+.ai-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+@media (max-width: 900px) {
+  .ai-skills-grid { grid-template-columns: 1fr; }
+}
+.ai-skill-col h4 {
+  font-family: var(--serif-cn);
+  font-size: 15px;
+  color: var(--text);
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+.ai-skill-col .kind-en {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  display: block;
+}
+.ai-skill-col p {
+  font-family: var(--serif-cn);
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--text-dim);
+  font-weight: 300;
+  margin-bottom: 12px;
+}
+.ai-skill-col .tools {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+  line-height: 1.8;
+}
+
+/* Self assessment */
+.self-assessment {
+  grid-column: 1 / -1;
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--accent);
+}
+.self-assessment-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+@media (max-width: 900px) {
+  .self-assessment-list { grid-template-columns: 1fr; }
+}
+.sa-item {
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+}
+.sa-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.sa-desc {
+  font-family: var(--serif-cn);
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+.sa-desc em {
+  color: var(--text);
+  font-style: normal;
+  font-weight: 400;
+}
+</style>
+
+<!-- ============================================
+     SKILLS / SELF ASSESSMENT
+============================================ -->
+<section class="section" id="skills">
+  <div class="section-header">
+    <div class="section-header-label">06 — Skills &amp; Tools</div>
+    <h2 class="section-header-title">
+      What I can do.
+      <span class="cn">技 能 掌 握</span>
+    </h2>
+  </div>
+  
+  <p class="skills-intro">
+    诚实地说——<em>能做什么、在学什么、还差什么</em>。<br>
+    分为三类：影视创作的核心能力、正在补足的技术、以及 AI 工具链的日常实践。
+  </p>
+  
+  <div class="skills-grid">
+    <!-- Row 1: Core creative skills -->
+    <div class="skill-block">
+      <div class="skill-block-num">C / 01</div>
+      <h3 class="skill-block-title">AIGC 工具链 <span class="en">AI-native workflow</span></h3>
+      <div class="skill-level-bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+      <p class="skill-desc">
+        熟练掌握主流 AI <strong>图像 / 视频 / 音频 / 文本</strong>生成工具与工作流，具备<em>商业级制作经验</em>。
+      </p>
+    </div>
+    
+    <div class="skill-block">
+      <div class="skill-block-num">C / 02</div>
+      <h3 class="skill-block-title">视频制作 <span class="en">Editing</span></h3>
+      <div class="skill-level-bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+      <p class="skill-desc">
+        熟练使用 <strong>DaVinci / Premiere / 剪映</strong>，有商业项目级剪辑经验。
+      </p>
+    </div>
+    
+    <div class="skill-block">
+      <div class="skill-block-num">C / 03</div>
+      <h3 class="skill-block-title">平面设计 <span class="en">Graphic Design</span></h3>
+      <div class="skill-level-bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+      <p class="skill-desc">
+        <strong>Photoshop / InDesign</strong>，具备专业级视觉设计能力（曾任《Variety》中国版美术编辑）。
+      </p>
+    </div>
+    
+    <div class="skill-block">
+      <div class="skill-block-num">C / 04</div>
+      <h3 class="skill-block-title">剧本创作 <span class="en">Screenwriting</span></h3>
+      <div class="skill-level-bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+      <p class="skill-desc">
+        熟悉类型叙事技巧，有<em>长篇剧本写作与投稿经验</em>。
+      </p>
+    </div>
+    
+    <div class="skill-block">
+      <div class="skill-block-num">C / 05</div>
+      <h3 class="skill-block-title">摄制流程 <span class="en">Production</span></h3>
+      <div class="skill-level-bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+      <p class="skill-desc">
+        策划、制片、摄影、导演——<em>影视全流程实操经验</em>。
+      </p>
+    </div>
+    
+    <div class="skill-block">
+      <div class="skill-block-num">C / 06</div>
+      <h3 class="skill-block-title">游戏素养 <span class="en">Gaming Literacy</span></h3>
+      <div class="skill-level-bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+      <p class="skill-desc">
+        广泛游玩多品类游戏；<strong>卡牌游戏顶尖竞技选手</strong>，曾获全国级游戏冠军。
+      </p>
+    </div>
+    
+    <!-- Row: Learning -->
+    <div class="skill-block">
+      <div class="skill-block-num">L / 01</div>
+      <h3 class="skill-block-title">3D 技术 <span class="en">Currently Learning</span></h3>
+      <div class="skill-level-bar"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+      <p class="skill-desc">
+        基础了解，能实操化应用到项目中——例如<em>利用 3D 建模提高 AIGC 视频的场景一致性</em>。正在精进中（有 AI 辅助，学习速度比以往快很多）。
+      </p>
+    </div>
+    
+    <div class="skill-block">
+      <div class="skill-block-num">L / 02</div>
+      <h3 class="skill-block-title">Coding <span class="en">Currently Learning</span></h3>
+      <div class="skill-level-bar"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+      <p class="skill-desc">
+        简单应用。能用 <strong>Vibe Coding</strong> 解决具体需求——<em>这个个人主页就是我独立做的</em>。
+      </p>
+    </div>
+    
+    <!-- AI Skills detailed -->
+    <div class="ai-skills">
+      <div class="ai-skills-header">A — AI 工具链深度</div>
+      <div class="ai-skills-grid">
+        <div class="ai-skill-col">
+          <h4>影像制作</h4>
+          <span class="kind-en">Image / Video / Audio</span>
+          <p>全流程熟练使用图像生成模型、视频生成模型、集成画布模型。<em>基本新出的模型都会付费体验</em>。</p>
+          <div class="tools">
+            NANO BANANA<br>
+            KLING · SEEDANCE<br>
+            SUNO
+          </div>
+        </div>
+        
+        <div class="ai-skill-col">
+          <h4>语言大模型</h4>
+          <span class="kind-en">LLMs</span>
+          <p>日常使用。用于创意写作、项目策划、美术拆解、分镜制作、信息搜集等工作。</p>
+          <div class="tools">
+            CLAUDE · GPT<br>
+            KIMI · DEEPSEEK
+          </div>
+        </div>
+        
+        <div class="ai-skill-col">
+          <h4>Coding</h4>
+          <span class="kind-en">Vibe Coding</span>
+          <p>简单应用。能用 Vibe Coding 解决具体需求，已独立制作个人主页。<em>更多内容学习中</em>。</p>
+          <div class="tools">
+            CLAUDE CODE<br>
+            CURSOR
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Self Assessment -->
+    <div class="self-assessment">
+      <div class="ai-skills-header">S — 自我评价</div>
+      <div class="self-assessment-list">
+        <div class="sa-item">
+          <div class="sa-label">01 · 学习与吸收</div>
+          <p class="sa-desc">
+            对新兴事物保持探索欲；遇到陌生领域，习惯<em>快速建立坐标系、再逐步深入</em>。
+          </p>
+        </div>
+        <div class="sa-item">
+          <div class="sa-label">02 · N + J（INFJ）</div>
+          <p class="sa-desc">
+            N 负责在项目前期贡献<em>想象力与视觉母题</em>；<br>
+            J 负责在后期把一切推到<em>落地</em>。
+          </p>
+        </div>
+        <div class="sa-item">
+          <div class="sa-label">03 · 剧组训练</div>
+          <p class="sa-desc">
+            有剧组工作经历，习惯在高压与多线协作下完成交付——<br>
+            <em>作品完成本身，就是最硬的判断</em>。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     CONTACT
+============================================ -->
+<style>
+.contact-section {
+  padding: 160px var(--pad-x) 100px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+.contact-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.contact-headline {
+  font-family: var(--serif-en);
+  font-weight: 300;
+  font-size: clamp(40px, 7vw, 88px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 48px;
+}
+.contact-headline em {
+  font-style: italic;
+  color: var(--accent);
+  font-family: var(--serif-en);
+}
+
+.contact-channels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 48px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+}
+.contact-channel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.contact-channel-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.contact-channel-value {
+  font-family: var(--serif-cn);
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 400;
+}
+.contact-channel-value a {
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+}
+
+.footer {
+  padding: 40px var(--pad-x);
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  border-top: 1px solid var(--line-soft);
+}
 </style>
 
 <section class="contact-section" id="contact">
-  <div class="contact-label">06 — Get in touch</div>
+  <div class="contact-label">07 — Get in touch</div>
   <h2 class="contact-headline">
     Let's make<br>
     <em>something</em> together.
@@ -2488,6 +2954,130 @@ body::before {
   document.addEventListener('mouseout', (e) => {
     if (e.target.closest(hoverables)) cursor.classList.remove('hover');
   });
+})();
+</script>
+
+<!-- ============================================
+     HERO BACKGROUND — ambient particle wave
+============================================ -->
+<script>
+(function() {
+  const canvas = document.getElementById('hero-bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const DPR = window.devicePixelRatio || 1;
+  
+  let W = 0, H = 0;
+  let particles = [];
+  let mx = -9999, my = -9999;
+  
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    W = rect.width;
+    H = rect.height;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(DPR, DPR);
+    build();
+  }
+  
+  function build() {
+    particles = [];
+    // density tuned to look subtle — fewer particles, slow drift
+    const count = Math.min(90, Math.floor((W * H) / 14000));
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        baseX: 0,  // set below
+        baseY: 0,
+        vx: 0,
+        vy: 0,
+        size: 0.5 + Math.random() * 1.2,
+        alpha: 0.15 + Math.random() * 0.25,
+        phase: Math.random() * Math.PI * 2,
+        freq: 0.0003 + Math.random() * 0.0004,
+        amp: 20 + Math.random() * 30
+      });
+      const p = particles[particles.length - 1];
+      p.baseX = p.x;
+      p.baseY = p.y;
+    }
+  }
+  
+  window.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mx = e.clientX - rect.left;
+    my = e.clientY - rect.top;
+  });
+  
+  resize();
+  window.addEventListener('resize', resize);
+  
+  function animate(t) {
+    ctx.clearRect(0, 0, W, H);
+    
+    for (const p of particles) {
+      // Gentle drifting orbit around base position
+      const tx = p.baseX + Math.cos(t * p.freq + p.phase) * p.amp;
+      const ty = p.baseY + Math.sin(t * p.freq * 1.3 + p.phase * 1.5) * p.amp * 0.6;
+      
+      // Soft cursor influence (subtle)
+      const dx = p.x - mx;
+      const dy = p.y - my;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < 22500) { // 150px radius
+        const d = Math.sqrt(d2) + 0.01;
+        const force = (1 - d / 150) * 0.35;
+        p.vx += (dx / d) * force;
+        p.vy += (dy / d) * force;
+      }
+      
+      // Spring back to drift target
+      p.vx += (tx - p.x) * 0.015;
+      p.vy += (ty - p.y) * 0.015;
+      p.vx *= 0.94;
+      p.vy *= 0.94;
+      p.x += p.vx;
+      p.y += p.vy;
+      
+      // Warm champagne color for most particles, subtle white for a few
+      const flicker = 0.7 + Math.sin(t * 0.0012 + p.phase) * 0.3;
+      ctx.globalAlpha = p.alpha * flicker;
+      ctx.fillStyle = (p.phase > Math.PI) ? '#c9b285' : '#e8e4dc';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    // Draw thin connecting lines between near particles (constellation effect)
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = 'rgba(201, 178, 133, 0.08)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i];
+        const b = particles[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 14000) {
+          ctx.globalAlpha = (1 - d2 / 14000) * 0.15;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+    
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
 })();
 </script>
 
@@ -2696,18 +3286,25 @@ body::before {
           }
         }
       }
-      // assign random mapping — particles pick a white pixel near their home
+      
       const targets = new Float32Array(particles.length * 2);
-      for (let pi = 0; pi < particles.length; pi++) {
-        const p = particles[pi];
-        // pick a random white pixel — produces a pleasing "scatter into shape" effect
-        const pick = white[Math.floor(Math.random() * white.length)];
-        if (pick) {
-          targets[pi * 2] = pick[0] + (Math.random() - 0.5) * 3;
-          targets[pi * 2 + 1] = pick[1] + (Math.random() - 0.5) * 3;
-        } else {
-          targets[pi * 2] = p.hx;
-          targets[pi * 2 + 1] = p.hy;
+      
+      if (white.length === 0) {
+        for (let pi = 0; pi < particles.length; pi++) {
+          targets[pi * 2] = particles[pi].hx;
+          targets[pi * 2 + 1] = particles[pi].hy;
+        }
+      } else {
+        // Shuffle white pixels for variety
+        for (let i = white.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [white[i], white[j]] = [white[j], white[i]];
+        }
+        // Assign each particle a white pixel (cycle through list so every particle maps to shape)
+        for (let pi = 0; pi < particles.length; pi++) {
+          const pick = white[pi % white.length];
+          targets[pi * 2] = pick[0] + (Math.random() - 0.5) * 2;
+          targets[pi * 2 + 1] = pick[1] + (Math.random() - 0.5) * 2;
         }
       }
       shapeTargets[key].targets = targets;
@@ -2773,21 +3370,11 @@ body::before {
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i];
       
-      // Reveal zone: distance from mouse
-      let reveal = 0;
-      if (mouseInside && targets) {
-        const dx = p.hx - mx;
-        const dy = p.hy - my;
-        const d = Math.sqrt(dx * dx + dy * dy);
-        // Reveal radius ~ 120px
-        if (d < 120) {
-          reveal = 1 - d / 120;
-          reveal = reveal * reveal; // ease-in
-        }
-      }
-      
-      // Smoothly approach current reveal
-      revealMap[i] += (reveal - revealMap[i]) * 0.12;
+      // Global reveal based on whether mouse is inside the canvas
+      // When mouse inside: particles gradually move toward their shape target
+      // When mouse leaves: they return to home grid
+      const desiredReveal = (mouseInside && targets) ? 1 : 0;
+      revealMap[i] += (desiredReveal - revealMap[i]) * 0.08;
       
       let targetX, targetY;
       if (targets && revealMap[i] > 0.001) {
@@ -2806,18 +3393,32 @@ body::before {
       targetX += b1;
       targetY += b2;
       
+      // Extra cursor repulsion: particles near cursor get slightly pushed
+      // to add a "scratch" feel on top of the global reveal
+      if (mouseInside) {
+        const mdx = p.x - mx;
+        const mdy = p.y - my;
+        const md2 = mdx * mdx + mdy * mdy;
+        if (md2 < 3600) { // 60px radius
+          const md = Math.sqrt(md2) + 0.001;
+          const force = (1 - md / 60) * 1.2;
+          p.vx += (mdx / md) * force;
+          p.vy += (mdy / md) * force;
+        }
+      }
+      
       // spring to target
       p.vx += (targetX - p.x) * 0.08;
       p.vy += (targetY - p.y) * 0.08;
-      p.vx *= 0.75;
-      p.vy *= 0.75;
+      p.vx *= 0.78;
+      p.vy *= 0.78;
       p.x += p.vx;
       p.y += p.vy;
       
       // draw
-      const isRevealed = revealMap[i] > 0.08;
-      const alpha = p.baseAlpha + revealMap[i] * 0.75;
-      const size = p.baseSize + revealMap[i] * 0.7;
+      const isRevealed = revealMap[i] > 0.15;
+      const alpha = p.baseAlpha + revealMap[i] * 0.65;
+      const size = p.baseSize + revealMap[i] * 0.6;
       
       ctx.globalAlpha = Math.min(1, alpha);
       ctx.fillStyle = isRevealed ? '#c9b285' : '#b8b4ad';
