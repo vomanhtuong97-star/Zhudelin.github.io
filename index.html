@@ -1,0 +1,2873 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>祝德林 · Zhu Delin · Portfolio</title>
+<meta name="description" content="祝德林 Zhu Delin — Filmmaker, Designer, AI Creator. 中国传媒大学电影学硕士，专注影像创作、视觉设计与AIGC实践。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Noto+Serif+SC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   FOUNDATION
+============================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink: #0a0a0a;
+  --ink-soft: #121212;
+  --ink-card: #161616;
+  --line: rgba(255,255,255,0.08);
+  --line-soft: rgba(255,255,255,0.04);
+  --text: #e8e4dc;
+  --text-dim: #9a968e;
+  --text-faint: #55534e;
+  --accent: #c9b285;      /* warm champagne */
+  --accent-soft: #8a7a5a;
+  
+  --serif-en: 'Cormorant Garamond', 'Times New Roman', serif;
+  --serif-cn: 'Noto Serif SC', '宋体', serif;
+  --mono: 'Space Mono', monospace;
+  
+  --max-w: 1440px;
+  --pad-x: clamp(20px, 5vw, 80px);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--serif-cn);
+  font-weight: 300;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Custom circular cursor */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background: rgba(233, 228, 220, 0.35);
+  border: 1px solid rgba(233, 228, 220, 0.6);
+  mix-blend-mode: difference;
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              height 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              margin 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.3s,
+              border-color 0.3s;
+  will-change: transform;
+}
+.cursor.hover {
+  width: 28px;
+  height: 28px;
+  margin-left: -14px;
+  margin-top: -14px;
+  background: rgba(201, 178, 133, 0.25);
+  border-color: rgba(201, 178, 133, 0.85);
+}
+
+/* Show default cursor on mobile/touch */
+@media (hover: none) {
+  body { cursor: auto; }
+  .cursor { display: none; }
+}
+
+::selection { background: var(--accent); color: var(--ink); }
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration: none; transition: opacity .3s ease; }
+a:hover { opacity: .6; }
+
+/* subtle grain overlay over entire page */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* ============================================
+   TYPOGRAPHY
+============================================ */
+.display-en {
+  font-family: var(--serif-en);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+.section-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+/* ============================================
+   NAV
+============================================ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 24px var(--pad-x);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, rgba(10,10,10,0.9), rgba(10,10,10,0));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--text);
+}
+.nav-logo span { color: var(--accent); }
+.nav-links {
+  display: flex;
+  gap: 32px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.nav-links a { color: var(--text-dim); transition: color .3s; }
+.nav-links a:hover { color: var(--accent); opacity: 1; }
+@media (max-width: 720px) {
+  .nav-links { display: none; }
+}
+
+/* ============================================
+   HERO
+============================================ */
+.hero {
+  min-height: 100vh;
+  padding: 160px var(--pad-x) 80px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  position: relative;
+}
+
+.hero-mark {
+  position: absolute;
+  top: 50%;
+  right: var(--pad-x);
+  transform: translateY(-50%);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--text-faint);
+  writing-mode: vertical-rl;
+}
+
+.hero-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: var(--max-w);
+  width: 100%;
+}
+
+.hero-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  opacity: 0.7;
+  transition: opacity 0.7s, text-shadow 0.7s;
+}
+.hero-label:hover {
+  opacity: 1;
+  text-shadow: 0 0 18px rgba(201, 178, 133, 0.6);
+}
+.hero-label::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero-name {
+  font-family: var(--serif-en);
+  font-weight: 300;
+  font-size: clamp(48px, 8vw, 120px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.hero-name .letter,
+.hero-name .char {
+  display: inline-block;
+  color: var(--text-dim);
+  transition: color 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              text-shadow 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0.72;
+}
+.hero-name .letter:hover,
+.hero-name .char:hover {
+  color: var(--text);
+  opacity: 1;
+  text-shadow: 0 0 24px rgba(233, 228, 220, 0.55),
+               0 0 60px rgba(201, 178, 133, 0.22);
+}
+.hero-name .cn {
+  font-family: var(--serif-cn);
+  font-weight: 400;
+  display: block;
+  font-size: 0.42em;
+  letter-spacing: 0.18em;
+  margin-top: 24px;
+  color: var(--text-dim);
+}
+.hero-name .space {
+  display: inline-block;
+  width: 0.35em;
+}
+
+.hero-tagline {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: clamp(16px, 1.8vw, 22px);
+  color: var(--text-dim);
+  margin-top: 36px;
+  max-width: 680px;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  opacity: 0.72;
+  transition: color 0.7s, opacity 0.7s, text-shadow 0.7s;
+}
+.hero-tagline:hover {
+  color: var(--text);
+  opacity: 1;
+  text-shadow: 0 0 20px rgba(233, 228, 220, 0.45);
+}
+.hero-tagline .sep {
+  color: var(--accent);
+  font-style: normal;
+  margin: 0 12px;
+}
+.hero-tagline-cn {
+  display: block;
+  font-family: var(--serif-cn);
+  font-style: normal;
+  font-size: 0.78em;
+  color: var(--text-dim);
+  margin-top: 14px;
+  letter-spacing: 0.05em;
+  font-weight: 300;
+}
+
+.hero-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto;
+  padding-top: 60px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.hero-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  opacity: 0.7;
+  transition: opacity 0.6s, text-shadow 0.6s;
+}
+.hero-meta-item:hover {
+  opacity: 1;
+  text-shadow: 0 0 14px rgba(233, 228, 220, 0.4);
+}
+.hero-meta-label { color: var(--text-faint); font-size: 10px; }
+.hero-meta-value { color: var(--text); }
+
+.scroll-cue {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--text-faint);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+.scroll-cue::after {
+  content: '';
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(6px); }
+}
+
+/* ============================================
+   SECTIONS
+============================================ */
+.section {
+  padding: 140px var(--pad-x);
+  max-width: var(--max-w);
+  margin: 0 auto;
+  position: relative;
+}
+
+.section-header {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 40px;
+  align-items: baseline;
+  margin-bottom: 80px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+.section-header-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.section-header-title {
+  font-family: var(--serif-en);
+  font-weight: 300;
+  font-size: clamp(40px, 6vw, 80px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.section-header-title .cn {
+  display: block;
+  font-family: var(--serif-cn);
+  font-weight: 300;
+  font-size: 0.35em;
+  color: var(--text-dim);
+  letter-spacing: 0.2em;
+  margin-top: 16px;
+}
+
+@media (max-width: 720px) {
+  .section { padding: 80px var(--pad-x); }
+  .section-header {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ============================================
+   PROFILE (about + cv merged)
+============================================ */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 80px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .profile-grid { grid-template-columns: 1fr; gap: 48px; }
+}
+
+.profile-visual {
+  position: sticky;
+  top: 100px;
+}
+
+.profile-canvas-wrap {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  background: #060606;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+#profile-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.profile-canvas-caption {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.identity-tags {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.identity-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  transition: all 0.3s;
+  background: transparent;
+}
+.identity-tag:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.identity-tag.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(201, 178, 133, 0.08);
+}
+.profile-canvas-hint {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.profile-prose {
+  font-family: var(--serif-cn);
+  font-size: 18px;
+  line-height: 1.85;
+  color: var(--text);
+  font-weight: 300;
+  margin-bottom: 56px;
+}
+.profile-prose em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.profile-cv-block {
+  margin-bottom: 40px;
+}
+.profile-cv-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--accent);
+  display: inline-block;
+}
+
+.profile-cv-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 24px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line-soft);
+  align-items: baseline;
+}
+.profile-cv-row:last-child { border-bottom: none; }
+.profile-cv-year {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.profile-cv-detail {
+  font-family: var(--serif-cn);
+  font-size: 15px;
+  color: var(--text);
+  font-weight: 300;
+  line-height: 1.6;
+}
+.profile-cv-detail .role {
+  color: var(--text-dim);
+  margin-left: 8px;
+  font-size: 13px;
+}
+.profile-cv-detail em {
+  color: var(--accent);
+  font-style: normal;
+}
+@media (max-width: 720px) {
+  .profile-cv-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Custom circular cursor -->
+<div class="cursor" id="custom-cursor"></div>
+
+<!-- ============================================
+     NAV
+============================================ -->
+<nav class="nav">
+  <div class="nav-logo">ZHU DELIN <span>·</span> 祝德林</div>
+  <div class="nav-links">
+    <a href="#works">Works</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#design">Design</a>
+    <a href="#notes">Notes</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ============================================
+     HERO
+============================================ -->
+<section class="hero">
+  <div class="hero-mark">PORTFOLIO · 2026</div>
+  
+  <div class="hero-main">
+    <div class="hero-label">SELECTED WORKS <span>·</span> 2022 – 2026</div>
+    
+    <h1 class="hero-name">
+      <span class="letter">Z</span><span class="letter">h</span><span class="letter">u</span><span class="space"></span><span class="letter">D</span><span class="letter">e</span><span class="letter">l</span><span class="letter">i</span><span class="letter">n</span>
+      <span class="cn"><span class="char">祝</span> <span class="char">德</span> <span class="char">林</span></span>
+    </h1>
+    
+    <p class="hero-tagline">
+      Filmmaker <span class="sep">·</span> Designer <span class="sep">·</span> AI Creator
+      <span class="hero-tagline-cn">喜欢电影、游戏与动画，正在和 AI 一起学习如何讲故事。</span>
+    </p>
+  </div>
+  
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Based in</span>
+      <span class="hero-meta-value">Beijing / 北京</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Education</span>
+      <span class="hero-meta-value">CUC · M.A. in Film</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Available</span>
+      <span class="hero-meta-value">For internship</span>
+    </div>
+  </div>
+  
+  <div class="scroll-cue">SCROLL</div>
+</section>
+
+<!-- ============================================
+     PROFILE
+============================================ -->
+<section class="section" id="about">
+  <div class="section-header">
+    <div class="section-header-label">01 — Profile</div>
+    <h2 class="section-header-title">
+      Profile.
+      <span class="cn">个 人 简 介</span>
+    </h2>
+  </div>
+  
+  <div class="profile-grid">
+    <div class="profile-visual">
+      <div class="profile-canvas-wrap">
+        <canvas id="profile-canvas"></canvas>
+      </div>
+      <p class="profile-canvas-caption">移 动 光 标 · 拓 印 形 状</p>
+      
+      <div class="identity-tags">
+        <span class="identity-tag">Filmmaker</span>
+        <span class="identity-tag">AI Director</span>
+        <span class="identity-tag">Editor</span>
+        <span class="identity-tag">Designer</span>
+        <span class="identity-tag">Writer</span>
+        <span class="identity-tag">Researcher</span>
+      </div>
+    </div>
+    
+    <div>
+      <div class="profile-prose">
+        中国传媒大学电影学硕士在读，研究方向为<em>类型叙事与影游融合</em>。<br>
+        创作横跨影视工业、视觉设计与 AIGC 三个领域。
+      </div>
+      
+      <div class="profile-cv-block">
+        <div class="profile-cv-label">Education · 教育</div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">2024 – 2027</span>
+          <div class="profile-cv-detail">
+            中国传媒大学 · 硕士<span class="role">艺术学（电影方向）· 类型叙事 / 影游融合</span>
+          </div>
+        </div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">2021 – 2024</span>
+          <div class="profile-cv-detail">
+            中国传媒大学 · 本科<span class="role">文化产业管理 · 辅修融媒体影像创作</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-cv-block">
+        <div class="profile-cv-label">Experience · 实习</div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">2025.11 – 2026.03</span>
+          <div class="profile-cv-detail">
+            兔狲文化传媒 · 剪辑指导<span class="role">Apple 合作艺术短片</span>
+          </div>
+        </div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">2025.06 – 2025.09</span>
+          <div class="profile-cv-detail">
+            中央广播电视总台 · 摄影助理<span class="role">9.3 阅兵直播摄制</span>
+          </div>
+        </div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">2022.11 – 2023.02</span>
+          <div class="profile-cv-detail">
+            《Variety》中国版 · 美术编辑<span class="role">专栏版面 + 商业广告</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-cv-block">
+        <div class="profile-cv-label">Awards · 主要获奖</div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">2026</span>
+          <div class="profile-cv-detail">
+            《万物之声》《龙马献福》· <em>2026 AI 春晚最佳作品奖</em>
+          </div>
+        </div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">2025</span>
+          <div class="profile-cv-detail">
+            《真空》· 海峡两岸"融创·未来"<em>最佳导演奖 + 最具创意短视频奖</em>
+          </div>
+        </div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">2025</span>
+          <div class="profile-cv-detail">
+            《自新世界》· 首届高校 AIGC 短片短剧优质作品奖 + 创作营一等奖
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-cv-block">
+        <div class="profile-cv-label">Publications · 学术发表</div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">2024</span>
+          <div class="profile-cv-detail">
+            《以〈黑神话：悟空〉为例：探索影游融合的影像实践》<br>
+            <span class="role" style="margin-left:0;">《中国电影市场》</span>
+          </div>
+        </div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">2025</span>
+          <div class="profile-cv-detail">
+            《〈情感反诈模拟器〉的"玩叙失调"与数字化情感》<br>
+            <span class="role" style="margin-left:0;">《北京文艺观察》</span>
+          </div>
+        </div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">2026</span>
+          <div class="profile-cv-detail">
+            《故事 or 感受：近年VR影像作品的叙事模态与文化表达》<br>
+            <span class="role" style="margin-left:0;"><em>《电影研究》（即将见刊）</em></span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-cv-block">
+        <div class="profile-cv-label">Self-run · 自媒体</div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">Since 2024</span>
+          <div class="profile-cv-detail">
+            LTM 卡牌频道<span class="role">冷启动 20 期破 100 万播放 · 粉丝近 1 万</span>
+          </div>
+        </div>
+        <div class="profile-cv-row">
+          <span class="profile-cv-year">Since 2024</span>
+          <div class="profile-cv-detail">
+            微信公众号「Mage 的幻想壁橱」<span class="role">单篇影评 <em>20w+ 阅读</em></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SELECTED WORKS
+============================================ -->
+<style>
+/* Work item: full-bleed visual + side meta */
+.works-intro {
+  max-width: 680px;
+  margin-bottom: 120px;
+  font-family: var(--serif-cn);
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+.works-intro em {
+  color: var(--accent);
+  font-style: normal;
+  font-family: var(--serif-en);
+  font-size: 1.1em;
+}
+
+.work {
+  margin-bottom: 180px;
+  position: relative;
+}
+.work:last-child { margin-bottom: 0; }
+
+.work-header {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 40px;
+  align-items: baseline;
+  margin-bottom: 48px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.work-number {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+}
+.work-title {
+  font-family: var(--serif-en);
+  font-weight: 300;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.work-title .cn {
+  display: block;
+  font-family: var(--serif-cn);
+  font-weight: 400;
+  font-size: 0.55em;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  margin-top: 10px;
+}
+.work-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-align: right;
+  line-height: 1.8;
+}
+.work-meta .award { color: var(--accent); }
+@media (max-width: 720px) {
+  .work-header {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .work-meta { text-align: left; }
+}
+
+.work-body {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 60px;
+  margin-bottom: 48px;
+}
+@media (max-width: 900px) {
+  .work-body { grid-template-columns: 1fr; gap: 32px; }
+}
+
+.work-details {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  line-height: 2.2;
+}
+.work-details-row { display: flex; flex-direction: column; margin-bottom: 24px; }
+.work-details-label { color: var(--text-faint); font-size: 10px; }
+.work-details-value { color: var(--text); }
+
+.work-description {
+  font-family: var(--serif-cn);
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--text);
+  font-weight: 300;
+}
+.work-description p { margin-bottom: 20px; }
+.work-description .lede {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.5;
+  color: var(--accent);
+  margin-bottom: 28px;
+  letter-spacing: 0.01em;
+}
+
+/* Visual layouts */
+.work-hero-img {
+  width: 100%;
+  margin-bottom: 32px;
+}
+.work-hero-img img {
+  width: 100%;
+}
+
+.img-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.img-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.img-grid-asym {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+@media (max-width: 720px) {
+  .img-grid-3 { grid-template-columns: 1fr; }
+  .img-grid-asym { grid-template-columns: 1fr; }
+}
+
+.img-grid-2 img, .img-grid-3 img, .img-grid-asym img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.poster-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) 1fr;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 32px;
+}
+@media (max-width: 720px) {
+  .poster-layout { grid-template-columns: 1fr; }
+}
+.poster-layout .poster-col img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.poster-layout .gallery-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.poster-layout .gallery-col img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+}
+
+.bili-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 12px 20px;
+  border: 1px solid var(--accent);
+  margin-top: 16px;
+  transition: all .3s;
+}
+.bili-link:hover {
+  background: var(--accent);
+  color: var(--ink);
+  opacity: 1;
+}
+.bili-link::after { content: '→'; font-family: var(--serif-en); }
+</style>
+
+<section class="section" id="works">
+  <div class="section-header">
+    <div class="section-header-label">02 — Recent Works</div>
+    <h2 class="section-header-title">
+      Recent Works.
+      <span class="cn">近 期 作 品</span>
+    </h2>
+  </div>
+  
+  <p class="works-intro">
+    七部作品 · 2022 – 2026 · 按创作主导程度排列
+  </p>
+  
+  <!-- WORK 01 · 万物之声 -->
+  <article class="work">
+    <header class="work-header">
+      <div class="work-number">W / 01</div>
+      <h3 class="work-title">
+        万物之声 · 天音
+      </h3>
+      <div class="work-meta">
+        <div>AIGC Short Film · 2026</div>
+        <div class="award">国潮奔 AI · 马跃山河</div>
+        <div class="award">2026 AI 春节联欢晚会 · 最佳作品奖</div>
+      </div>
+    </header>
+    
+    <div class="work-hero-img">
+      <img src="assets/img/wanwu_poster.jpg" alt="万物之声 海报" loading="lazy">
+    </div>
+    
+    <div class="work-body">
+      <div class="work-details">
+        <div class="work-details-row">
+          <span class="work-details-label">Role</span>
+          <span class="work-details-value">Director / Editor</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Type</span>
+          <span class="work-details-value">AIGC Short Film</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Award</span>
+          <span class="work-details-value">2026 AI 春晚 · 最佳作品奖</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Year</span>
+          <span class="work-details-value">2026</span>
+        </div>
+      </div>
+      
+      <div class="work-description">
+        <p class="lede">
+          未来采音师夔音穿梭于各个自然空间，收集万物之声。
+        </p>
+        <p>
+          一部关于声音、生态与自然的 AIGC 短片，以未来时代为出点，以视觉与声场共同构建一个"后人类"万物有灵的视觉谱系。
+        </p>
+        <p>
+          从网络空间穿梭到鲸落海洋、到奔腾草原、再到空谷峰林——在同一个世界观里以声音串联起多套完全不同的视觉体系，这本身就是对 AIGC 工作流协调能力的检验。
+        </p>
+        <a class="bili-link" href="https://www.bilibili.com/video/BV1yBZMBrEd1/" target="_blank">观看作品预览 · Bilibili</a>
+      </div>
+    </div>
+    
+    <div class="img-grid-2">
+      <img src="assets/img/wanwu_ocean_character.jpg" alt="海洋" loading="lazy">
+      <img src="assets/img/wanwu_grassland_character.jpg" alt="草原" loading="lazy">
+    </div>
+    <div class="img-grid-3">
+      <img src="assets/img/wanwu_grassland.jpg" alt="草原地貌" loading="lazy">
+      <img src="assets/img/wanwu_ocean.jpg" alt="海洋地貌" loading="lazy">
+      <img src="assets/img/wanwu_peaks.jpg" alt="峰林地貌" loading="lazy">
+    </div>
+    <div class="img-grid-2">
+      <img src="assets/img/wanwu_terrain1.jpg" alt="地貌变化 1" loading="lazy">
+      <img src="assets/img/wanwu_terrain2.jpg" alt="地貌变化 2" loading="lazy">
+    </div>
+  </article>
+  
+  <!-- WORK 02 · 自新世界 -->
+  <article class="work">
+    <header class="work-header">
+      <div class="work-number">W / 02</div>
+      <h3 class="work-title">
+        自新世界 · 机械与伪神
+      </h3>
+      <div class="work-meta">
+        <div>AIGC Short Series · 2025</div>
+        <div class="award">2026 微视听文艺盛典 · 最佳微漫剧奖</div>
+        <div class="award">首届高校 AIGC 短片短剧优质作品奖</div>
+        <div class="award">高校 AIGC 影像创作营 一等奖</div>
+      </div>
+    </header>
+    
+    <div class="poster-layout">
+      <div class="poster-col">
+        <img src="assets/img/newworld_poster.jpg" alt="自新世界 海报" loading="lazy">
+      </div>
+      <div class="gallery-col">
+        <img src="assets/img/newworld_church.jpg" alt="机械教堂" loading="lazy">
+        <img src="assets/img/newworld_fleshbuddha.jpg" alt="血肉佛陀" loading="lazy">
+        <img src="assets/img/newworld_female.jpg" alt="女主" loading="lazy">
+        <img src="assets/img/newworld_buddha.jpg" alt="佛陀" loading="lazy">
+      </div>
+    </div>
+    
+    <div class="work-body">
+      <div class="work-details">
+        <div class="work-details-row">
+          <span class="work-details-label">Role</span>
+          <span class="work-details-value">Director / Co-creator</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Type</span>
+          <span class="work-details-value">Short Series (AIGC)</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Awards</span>
+          <span class="work-details-value">国家级 / 高校级 三奖</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Year</span>
+          <span class="work-details-value">2025 – 2026</span>
+        </div>
+      </div>
+      
+      <div class="work-description">
+        <p class="lede">
+          后末日寓言：机械教堂、血肉佛陀、赛博废墟与被复活的伪神。
+        </p>
+        <p>
+          一个由 AI 捏塑的世界，关于信仰的异化与觉醒。作品灵感来源于德沃夏克的《e 小调第九交响曲》，和贵志祐介的科幻小说 / 动画作品。
+        </p>
+        <p>
+          整个系列采用浓郁的<em style="color:var(--accent); font-style:normal; font-family:var(--serif-en)">血红 / 机械灰</em>双色调作为视觉锚点，我们参考了《攻壳机动队》《阿基拉》等手绘动画以建立美术一致性。
+        </p>
+        <p>
+          此外，我们尝试将中国神话以机械造物的形式进行重新诠释——由此诞生了女娲、鲲鹏、玄龟等形象。
+        </p>
+        <a class="bili-link" href="https://www.bilibili.com/video/BV1SUWmztERF/" target="_blank">观看完整作品 · Bilibili</a>
+      </div>
+    </div>
+    
+    <div class="img-grid-3">
+      <img src="assets/img/newworld_catastrophe1.jpg" alt="大破灭1" loading="lazy">
+      <img src="assets/img/newworld_catastrophe2.jpg" alt="大破灭2" loading="lazy">
+      <img src="assets/img/newworld_catastrophe3.jpg" alt="大破灭3" loading="lazy">
+    </div>
+    <div class="img-grid-asym">
+      <img src="assets/img/newworld_street.jpg" alt="废弃街道" loading="lazy">
+      <img src="assets/img/newworld_monster.jpg" alt="机械怪物" loading="lazy">
+    </div>
+    <div class="img-grid-2">
+      <img src="assets/img/newworld_battle1.jpg" alt="战斗1" loading="lazy">
+      <img src="assets/img/newworld_battle2.jpg" alt="战斗2" loading="lazy">
+    </div>
+  </article>
+  
+  <!-- WORK 03 · 瀛川坠龙事件 -->
+  <article class="work">
+    <header class="work-header">
+      <div class="work-number">W / 03</div>
+      <h3 class="work-title">
+        瀛川坠龙事件
+      </h3>
+      <div class="work-meta">
+        <div>Mockumentary · AIGC · 2026</div>
+      </div>
+    </header>
+    
+    <div class="work-hero-img">
+      <img src="assets/img/yingchuan_poster.jpg" alt="瀛川坠龙事件 海报" loading="lazy">
+    </div>
+    
+    <div class="work-body">
+      <div class="work-details">
+        <div class="work-details-row">
+          <span class="work-details-label">Role</span>
+          <span class="work-details-value">Director / Producer / Editor</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Format</span>
+          <span class="work-details-value">Mockumentary / 伪纪录</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">References</span>
+          <span class="work-details-value">走近科学 · Villeneuve · 大友克洋</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Year</span>
+          <span class="work-details-value">2026</span>
+        </div>
+      </div>
+      
+      <div class="work-description">
+        <p class="lede">
+          一段龙形怪物在空中飞舞的视频刷屏全网。过气主播骆晴决定抓住这个机会重回观众视野——她组建了一支草台班子，深入事发地瀛川探险。
+        </p>
+        <p>
+          视觉基调融合了《走近科学》式的中国乡镇真实感、维伦纽瓦式的神秘主义构图，以及大友克洋作品里那种"物件即史诗"的细节密度——青铜壁画、青铜飞船、乡村泥塑与无脸佛陀，构成一条由影像线索串起的"异怪事件"考古学。
+        </p>
+      </div>
+    </div>
+    
+    <div class="img-grid-2">
+      <img src="assets/img/yingchuan_bronze_relief.jpg" alt="青铜壁画" loading="lazy">
+      <img src="assets/img/yingchuan_bronze_ship.jpg" alt="青铜飞船" loading="lazy">
+    </div>
+    <div class="img-grid-2">
+      <img src="assets/img/yingchuan_village.jpg" alt="乡村泥塑" loading="lazy">
+      <img src="assets/img/yingchuan_faceless.jpg" alt="无脸佛陀" loading="lazy">
+    </div>
+  </article>
+  
+  <!-- WORK 04 · 真空 -->
+  <article class="work">
+    <header class="work-header">
+      <div class="work-number">W / 04</div>
+      <h3 class="work-title">
+        真空
+      </h3>
+      <div class="work-meta">
+        <div>Sci-fi Short · AIGC · 2025</div>
+        <div class="award">最具创意短视频奖</div>
+        <div class="award">最佳导演奖</div>
+      </div>
+    </header>
+    
+    <div class="poster-layout">
+      <div class="poster-col">
+        <img src="assets/img/vacuum_poster.jpg" alt="真空 海报" loading="lazy">
+      </div>
+      <div class="work-description" style="align-self:center;">
+        <p class="lede">
+          T-1900 — 一个没有植入声音模块的机器人，飘行在没有人开口说话的真空里。
+        </p>
+        <p>
+          一个关于孤独的故事。一个因阶级、种族的区隔而无人倾诉的女孩，遇到了一个没有植入声音模块的机器人 T-1900。在与外界隔绝的飞船上，神秘的羁绊悄然联结。
+        </p>
+        <p>
+          我们向《海上钢琴师》致敬——主角的名字就是 1900。不同于那位弃船而去的天才，T-1900 的星海比太平洋更加寂寥：因为区隔人类与陆地的不仅是空间，还有时间。这部影片画面风格参考了《银翼杀手 2049》《太空旅客》《米奇 17》《钢琴家》。
+        </p>
+        <p style="color: var(--text-dim); font-size: 15px; margin-top: 24px;">
+          第二届海峡两岸青年"融创·未来"微视听研创周 · 最具创意短视频奖 & 最佳导演奖
+        </p>
+      </div>
+    </div>
+    
+    <div class="work-hero-img">
+      <img src="assets/img/vacuum_room.jpg" alt="真空 娱乐室" loading="lazy">
+    </div>
+  </article>
+  
+  <!-- WORK 05 · 龙马献福 -->
+  <article class="work">
+    <header class="work-header">
+      <div class="work-number">W / 05</div>
+      <h3 class="work-title">
+        龙马献福 · 小白历险记
+      </h3>
+      <div class="work-meta">
+        <div>Animated Short · AIGC · 2026</div>
+        <div class="award">国潮奔 AI · 马跃山河</div>
+        <div class="award">2026 AI 春节联欢晚会 · 最佳作品奖</div>
+      </div>
+    </header>
+    
+    <div class="poster-layout">
+      <div class="poster-col">
+        <img src="assets/img/dragonhorse_poster.jpg" alt="小白历险记 海报" loading="lazy">
+      </div>
+      <div class="gallery-col">
+        <img src="assets/img/dragonhorse_cloud.jpg" alt="云海" loading="lazy">
+        <img src="assets/img/dragonhorse_grassland.jpg" alt="草原" loading="lazy">
+        <img src="assets/img/dragonhorse_snow.jpg" alt="雪原" loading="lazy">
+        <img src="assets/img/dragonhorse_human.jpg" alt="人间" loading="lazy">
+      </div>
+    </div>
+    
+    <div class="work-body">
+      <div class="work-details">
+        <div class="work-details-row">
+          <span class="work-details-label">Role</span>
+          <span class="work-details-value">Co-director</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Style</span>
+          <span class="work-details-value">手绘感国风动画</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Year</span>
+          <span class="work-details-value">2026</span>
+        </div>
+      </div>
+      
+      <div class="work-description">
+        <p class="lede">
+          龙马小白第一次下凡送福的奇妙冒险。
+        </p>
+        <p>
+          这部短片尝试了与《万物之声》《自新世界》完全不同的视觉路线——更温暖、更童趣、更接近传统节庆题材，证明了 AIGC 在风格化叙事上的另一种可能。
+        </p>
+        <a class="bili-link" href="https://www.bilibili.com/video/BV1FAZKBZEYf/" target="_blank">观看完整作品 · Bilibili</a>
+      </div>
+    </div>
+  </article>
+  
+  <!-- WORK 06 · 实拍作品 -->
+  <article class="work">
+    <header class="work-header">
+      <div class="work-number">W / 06</div>
+      <h3 class="work-title">
+        看日出 &amp; 蝴蝶梦
+      </h3>
+      <div class="work-meta">
+        <div>Apple Co-op · Live-Action · 2025</div>
+      </div>
+    </header>
+    
+    <div class="img-grid-2">
+      <img src="assets/img/sunrise_title.jpg" alt="看日出" loading="lazy">
+      <img src="assets/img/butterfly_title.jpg" alt="蝴蝶梦" loading="lazy">
+    </div>
+    
+    <div class="work-body">
+      <div class="work-details">
+        <div class="work-details-row">
+          <span class="work-details-label">Role</span>
+          <span class="work-details-value">Editor / Creative</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Client</span>
+          <span class="work-details-value">Apple × 兔狲文化</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Year</span>
+          <span class="work-details-value">2025 – 2026</span>
+        </div>
+      </div>
+      
+      <div class="work-description">
+        <p class="lede">
+          「不思议·怪谈」系列中的两部艺术短片，兔狲文化与 Apple 的合作项目。
+        </p>
+        <p>
+          作为剪辑指导，我参与了从粗剪到成片节奏把控的全流程，在胶片质感、色彩平衡与叙事节奏上与导演紧密协作。
+        </p>
+      </div>
+    </div>
+    
+    <div class="img-grid-3">
+      <img src="assets/img/sunrise_1.jpg" alt="看日出 1" loading="lazy">
+      <img src="assets/img/sunrise_2.jpg" alt="看日出 2" loading="lazy">
+      <img src="assets/img/sunrise_3.jpg" alt="看日出 3" loading="lazy">
+    </div>
+    <div class="img-grid-3">
+      <img src="assets/img/butterfly_1.jpg" alt="蝴蝶梦 1" loading="lazy">
+      <img src="assets/img/butterfly_2.jpg" alt="蝴蝶梦 2" loading="lazy">
+      <img src="assets/img/butterfly_3.jpg" alt="蝴蝶梦 3" loading="lazy">
+    </div>
+  </article>
+  
+  <!-- WORK 07 · AI 春晚主视觉 -->
+  <article class="work">
+    <header class="work-header">
+      <div class="work-number">W / 07</div>
+      <h3 class="work-title">
+        国潮奔 AI · 马跃山河
+      </h3>
+      <div class="work-meta">
+        <div>Brand Key Visual · 2026</div>
+      </div>
+    </header>
+    
+    <div class="work-hero-img" style="background: #a0000f; padding: 60px 40px; display: flex; justify-content: center; align-items: center; position: relative; cursor: pointer;" id="aigala-stage">
+      <img src="assets/img/aigala_visual.png" alt="国潮奔 AI · 马跃山河" id="aigala-still" style="max-width: 100%; max-height: 70vh; display: block;">
+      <video src="assets/img/aigala_video.mp4" loop muted playsinline id="aigala-video" style="max-width: 100%; max-height: 70vh; display: none; position: absolute; top: 60px; left: 50%; transform: translateX(-50%);"></video>
+      <div id="aigala-hint" style="position: absolute; bottom: 20px; right: 30px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.25em; color: rgba(255,255,255,0.7); text-transform: uppercase; pointer-events: none;">
+        Hover / Click to play
+      </div>
+    </div>
+    
+    <div class="work-body">
+      <div class="work-details">
+        <div class="work-details-row">
+          <span class="work-details-label">Role</span>
+          <span class="work-details-value">Key Visual Designer</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Client</span>
+          <span class="work-details-value">2026 AI 春节联欢晚会</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Type</span>
+          <span class="work-details-value">Brand Identity · 品牌主视觉</span>
+        </div>
+        <div class="work-details-row">
+          <span class="work-details-label">Year</span>
+          <span class="work-details-value">2026</span>
+        </div>
+      </div>
+      
+      <div class="work-description">
+        <p class="lede">
+          骏马生肖 × 电路脉络 × 中式金属字。
+        </p>
+        <p>
+          为 2026 AI 春晚设计的主视觉系统。核心图形是一只<em style="color:var(--accent); font-style:normal; font-family:var(--serif-en)">金线勾勒的骏马</em>，鬃毛延伸为电路脉络，象征"传统与算法的汇流"。主标题"国潮奔 AI·马跃山河"采用立体金属字，在春节红的底色上营造庄重与科技感并存的东方盛典仪式感。
+        </p>
+        <p>
+          这是我从 AIGC 影像创作延伸至<em style="color:var(--accent); font-style:normal; font-family:var(--serif-en)">品牌视觉设计</em>的一次尝试——用电影的视觉语言，去解决一个活动品牌的表达难题。
+        </p>
+        <a class="bili-link" href="https://weibo.com/1981653361/5268174052527309" target="_blank">查看完整晚会发布</a>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ============================================
+     METHODOLOGY · AI协同工作流
+============================================ -->
+<style>
+.methodology-section {
+  background: linear-gradient(to bottom, transparent, var(--ink-soft) 30%, var(--ink-soft) 70%, transparent);
+  padding: 100px 0;
+  margin: 80px 0;
+}
+
+.methodology-intro {
+  max-width: 760px;
+  margin-bottom: 80px;
+}
+.methodology-intro p {
+  font-family: var(--serif-cn);
+  font-size: 18px;
+  line-height: 1.85;
+  color: var(--text);
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+.methodology-intro .kicker {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 24px;
+  color: var(--accent);
+  margin-bottom: 28px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+.methodology-intro em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* Workflow — non-linear cyclical layout */
+.workflow {
+  position: relative;
+  padding: 40px 0;
+}
+
+.workflow-stages {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 60px;
+  position: relative;
+}
+@media (max-width: 900px) {
+  .workflow-stages { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 500px) {
+  .workflow-stages { grid-template-columns: 1fr; }
+}
+
+/* Connector arrows showing non-linear feedback flow */
+.workflow-stages::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: repeating-linear-gradient(to right,
+    var(--accent) 0,
+    var(--accent) 4px,
+    transparent 4px,
+    transparent 10px);
+  opacity: 0.3;
+  z-index: 0;
+}
+@media (max-width: 900px) {
+  .workflow-stages::before { display: none; }
+}
+
+.workflow-feedback-note {
+  position: relative;
+  text-align: center;
+  margin-bottom: 60px;
+  padding: 20px 0;
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+.workflow-feedback-note::before,
+.workflow-feedback-note::after {
+  content: '↻';
+  font-size: 22px;
+  margin: 0 16px;
+  vertical-align: middle;
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+.workflow-stage {
+  padding: 32px 24px;
+  border: 1px solid var(--line);
+  background: var(--ink);
+  position: relative;
+  transition: all .3s;
+  z-index: 1;
+}
+.workflow-stage:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.workflow-stage-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  margin-bottom: 20px;
+  display: block;
+}
+.workflow-stage-title {
+  font-family: var(--serif-en);
+  font-size: 26px;
+  color: var(--text);
+  margin-bottom: 8px;
+  font-weight: 400;
+}
+.workflow-stage-title-cn {
+  font-family: var(--serif-cn);
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+  margin-bottom: 20px;
+  display: block;
+}
+.workflow-stage-desc {
+  font-family: var(--serif-cn);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+.workflow-stage-tools {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  line-height: 1.8;
+}
+
+.workflow-principles {
+  margin-top: 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+@media (max-width: 720px) {
+  .workflow-principles { grid-template-columns: 1fr; }
+}
+
+.principle {
+  padding: 32px;
+  border-left: 2px solid var(--accent);
+}
+.principle-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.principle-text {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--text);
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+.principle-cn {
+  font-family: var(--serif-cn);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+</style>
+
+<div class="methodology-section">
+<section class="section" id="methodology" style="padding-top: 60px; padding-bottom: 60px;">
+  <div class="section-header">
+    <div class="section-header-label">03 — Methodology</div>
+    <h2 class="section-header-title">
+      Directing the machine.
+      <span class="cn">人 机 协 同 工 作 流</span>
+    </h2>
+  </div>
+  
+  <div class="methodology-intro">
+    <p class="kicker">I don't prompt the AI. I direct it.</p>
+    <p>
+      AIGC 将<em>传统影视工业集成在创作者面前</em>，我们变得从心所欲的同时，仍需审慎判断。
+    </p>
+    <p>
+      和传统影视的线性流程不同，AIGC 的工作流是<em>可反馈、可并行</em>的——每一阶段的产出都可以回流到上游，每一次新发现都可能改写下一步的判断。
+    </p>
+    <p>
+      新时代的影视，需在这种持续的协商中保持判断力。
+    </p>
+  </div>
+  
+  <div class="workflow">
+    <div class="workflow-stages">
+      <div class="workflow-stage">
+        <span class="workflow-stage-num">STAGE 01</span>
+        <h4 class="workflow-stage-title">Concept</h4>
+        <span class="workflow-stage-title-cn">概念 · 美术筹备</span>
+        <p class="workflow-stage-desc">
+          从故事内核与视觉母题出发。在 Shortdeck 等参考网站搜寻视觉锚点，结合大语言模型分析定调，把"想拍什么"翻译成可被生成的语言。
+        </p>
+        <div class="workflow-stage-tools">
+          Claude · GPT<br>
+          Kimi · Deepseek<br>
+          Shortdeck
+        </div>
+      </div>
+      
+      <div class="workflow-stage">
+        <span class="workflow-stage-num">STAGE 02</span>
+        <h4 class="workflow-stage-title">Visual</h4>
+        <span class="workflow-stage-title-cn">可视化</span>
+        <p class="workflow-stage-desc">
+          把上一阶段的概念做成可视化的数字资产：角色、场景、关键镜头初设。一方面指导后续制作流程，一方面反馈给第一阶段——视觉常常会改写概念本身。
+        </p>
+        <div class="workflow-stage-tools">
+          Nano Banana<br>
+          Midjourney · 即梦
+        </div>
+      </div>
+      
+      <div class="workflow-stage">
+        <span class="workflow-stage-num">STAGE 03</span>
+        <h4 class="workflow-stage-title">Generate</h4>
+        <span class="workflow-stage-title-cn">镜头生成</span>
+        <p class="workflow-stage-desc">
+          基于分镜表调度多个视频模型协同出镜头。每个模型擅长的东西不同，导演要懂得派谁上场、什么时候切换。音乐与音效在此同时启动。
+        </p>
+        <div class="workflow-stage-tools">
+          Seedance · 可灵<br>
+          Sora · Veo<br>
+          Suno
+        </div>
+      </div>
+      
+      <div class="workflow-stage">
+        <span class="workflow-stage-num">STAGE 04</span>
+        <h4 class="workflow-stage-title">Compose</h4>
+        <span class="workflow-stage-title-cn">合成 · 后期</span>
+        <p class="workflow-stage-desc">
+          AI 生成的素材被带回传统后期流程——剪辑节奏、声音设计、调色、字幕包装。AIGC 解放了制作，但没有取代导演的终审。
+        </p>
+        <div class="workflow-stage-tools">
+          DaVinci Resolve<br>
+          Pro Tools<br>
+          Premiere · 剪映
+        </div>
+      </div>
+    </div>
+    
+    <div class="workflow-feedback-note">
+      实践出完整流程 · 不拘泥于任何流程 · 以作品完成为导向
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ============================================
+     DESIGN · 设计作品
+============================================ -->
+<style>
+.design-intro {
+  max-width: 720px;
+  margin-bottom: 100px;
+  font-family: var(--serif-cn);
+  font-size: 17px;
+  line-height: 1.95;
+  color: var(--text);
+  font-weight: 300;
+}
+.design-intro em {
+  color: var(--accent);
+  font-style: normal;
+}
+.design-intro .quiet {
+  color: var(--text-dim);
+}
+
+.design-item {
+  margin-bottom: 140px;
+}
+.design-item:last-child { margin-bottom: 0; }
+
+.design-header {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 32px;
+  align-items: baseline;
+  margin-bottom: 48px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.design-header-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+}
+.design-header-title {
+  font-family: var(--serif-cn);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.design-header-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* Layout: small visual + verse-like prose */
+.design-show-verse {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .design-show-verse { grid-template-columns: 1fr; gap: 48px; }
+}
+
+.design-visual {
+  max-width: 380px;
+}
+.design-visual img {
+  width: 100%;
+  border: 1px solid var(--line);
+}
+.design-visual-caption {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.verse {
+  font-family: var(--serif-cn);
+  font-weight: 300;
+  color: var(--text);
+  line-height: 2.2;
+}
+.verse .line {
+  font-size: 17px;
+  display: block;
+  margin-bottom: 6px;
+}
+.verse .line.lg {
+  font-size: 22px;
+  color: var(--text);
+  font-family: var(--serif-en);
+  font-style: italic;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  letter-spacing: 0.01em;
+}
+.verse .line.dim {
+  color: var(--text-dim);
+}
+.verse .line.accent {
+  color: var(--accent);
+}
+.verse .gap {
+  display: block;
+  height: 28px;
+}
+
+/* B站视频嵌入 */
+.bili-embed-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 62.5%; /* 16:10 typical bilibili aspect */
+  background: #000;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.bili-embed-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* LTM cover cards — click → open B站 */
+.ltm-cover-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform .3s ease;
+}
+.ltm-cover-link:hover {
+  transform: translateY(-3px);
+  opacity: 1;
+}
+.ltm-cover-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #000;
+}
+.ltm-cover-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity .3s, transform .6s cubic-bezier(0.22,1,0.36,1);
+}
+.ltm-cover-link:hover .ltm-cover-frame img {
+  opacity: 0.85;
+  transform: scale(1.02);
+}
+.ltm-cover-frame .ltm-play-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 50%;
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 4px;
+  transition: all .3s;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.ltm-cover-link:hover .ltm-cover-frame .ltm-play-btn {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+/* Two-page Variety layout */
+.variety-split {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .variety-split { grid-template-columns: 1fr; gap: 40px; }
+}
+.variety-two-pages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.variety-two-pages img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  display: block;
+}
+@media (max-width: 720px) {
+  .variety-two-pages { grid-template-columns: 1fr; }
+}
+.variety-note {
+  padding-left: 24px;
+  border-left: 1px solid var(--line);
+}
+
+/* Daily Energy ad: poster + product stills + copy */
+.daily-energy-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 420px) 1fr;
+  gap: 48px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .daily-energy-layout { grid-template-columns: 1fr; gap: 32px; }
+}
+.de-poster img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  display: block;
+}
+.de-caption {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  text-align: center;
+}
+.de-side {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.de-products {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.de-products img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  display: block;
+  background: #0e0e0e;
+}
+.de-copy {
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.ltm-embed-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+@media (max-width: 720px) { .ltm-embed-grid { grid-template-columns: 1fr; } }
+
+.ltm-embed-label {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+</style>
+
+<section class="section" id="design">
+  <div class="section-header">
+    <div class="section-header-label">04 — Graphic Design</div>
+    <h2 class="section-header-title">
+      On the page.
+      <span class="cn">版 面 与 品 牌 设 计</span>
+    </h2>
+  </div>
+  
+  <div class="design-intro">
+    从平面设计中所学到的<br>
+    不只是排版本身<br>
+    更是一种审美的目光——<br>
+    <span class="quiet">一张图片如何被截取，一段文字如何呼吸，一切元素如何有机组合。</span><br>
+    这些经验，后来在我做影像的每一刻继续发挥作用。
+  </div>
+  
+  <!-- D / 01 Variety 版面 -->
+  <article class="design-item">
+    <header class="design-header">
+      <div class="design-header-num">D / 01</div>
+      <div class="design-header-title">
+        《Variety》中国版 · 专栏版面
+      </div>
+      <div class="design-header-meta">2022 · 冬季刊</div>
+    </header>
+    
+    <div class="variety-split">
+      <div class="variety-two-pages">
+        <img src="assets/img/variety_page-1.jpg" alt="Variety 版面 P73">
+        <img src="assets/img/variety_page-2.jpg" alt="Variety 版面 P74">
+      </div>
+      <aside class="variety-note verse">
+        <span class="line">本期专栏</span>
+        <span class="line accent">Pink Mood</span>
+        <span class="gap"></span>
+        <span class="line dim">从玲娜贝儿的出圈切入</span>
+        <span class="line dim">梳理粉色调在电影</span>
+        <span class="line dim">与时尚中的脉络。</span>
+        <span class="gap"></span>
+        <span class="line">从专栏策划</span>
+        <span class="line">到图片筛选</span>
+        <span class="line">到文字编排</span>
+        <span class="line dim">独立负责全流程。</span>
+      </aside>
+    </div>
+  </article>
+  
+  <!-- D / 02 Variety 广告 -->
+  <article class="design-item">
+    <header class="design-header">
+      <div class="design-header-num">D / 02</div>
+      <div class="design-header-title">
+        《Variety》中国版 · 商业广告
+      </div>
+      <div class="design-header-meta">2022 · 商业合作</div>
+    </header>
+    
+    <div class="daily-energy-layout">
+      <div class="de-poster">
+        <img src="assets/img/variety_ad.jpg" alt="Daily Energy 广告海报">
+        <p class="de-caption">甄 奢 · 黑 松 露 荞 麦 · 海 报 设 计</p>
+      </div>
+      <div class="de-side">
+        <div class="de-products">
+          <img src="assets/img/variety_product1.jpg" alt="Daily Energy 产品 1">
+          <img src="assets/img/variety_product2.jpg" alt="Daily White 产品 2">
+        </div>
+        <div class="de-copy verse">
+          <span class="line">编辑向设计强调克制与层次。</span>
+          <span class="line dim">商业向设计强调直觉与冲击。</span>
+          <span class="gap"></span>
+          <span class="line">这套产品海报与包装</span>
+          <span class="line">是对我另一种肌肉的锻炼——</span>
+          <span class="line accent">在三秒之内，让人看见。</span>
+        </div>
+      </div>
+    </div>
+  </article>
+  
+  <!-- D / 03 自媒体垂类频道 -->
+  <article class="design-item">
+    <header class="design-header">
+      <div class="design-header-num">D / 03</div>
+      <div class="design-header-title">
+        自媒体垂类频道 · 视觉设计
+      </div>
+      <div class="design-header-meta">Since 2024 · Self-run</div>
+    </header>
+    
+    <div class="ltm-embed-grid">
+      <a class="ltm-cover-link" href="https://www.bilibili.com/video/BV1MHtiekEMt/" target="_blank" rel="noopener">
+        <div class="ltm-cover-frame">
+          <img src="assets/img/ltm_cover1.jpg" alt="访谈封面">
+          <div class="ltm-play-btn">▶</div>
+        </div>
+        <p class="ltm-embed-label">人物访谈 · 阳光 Jiawei Zhang</p>
+      </a>
+      <a class="ltm-cover-link" href="https://www.bilibili.com/video/BV1cT411b7qx/" target="_blank" rel="noopener">
+        <div class="ltm-cover-frame">
+          <img src="assets/img/ltm_cover2.jpg" alt="杂谈封面">
+          <div class="ltm-play-btn">▶</div>
+        </div>
+        <p class="ltm-embed-label">杂谈 · 藤本树 · 邪道の美学</p>
+      </a>
+    </div>
+    
+    <div class="verse" style="max-width: 720px;">
+      <span class="line">从栏目策划、访谈脚本到封装设计：</span>
+      <span class="line dim">冷启动 20 期 · 累计播放破 100 万。</span>
+    </div>
+  </article>
+</section>
+
+<!-- ============================================
+     FIELD NOTES · 美学坐标
+============================================ -->
+<style>
+.notes-intro {
+  max-width: 720px;
+  margin-bottom: 80px;
+  font-family: var(--serif-cn);
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+.notes-intro em {
+  color: var(--accent);
+  font-style: normal;
+  font-family: var(--serif-en);
+  font-size: 1.1em;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+@media (max-width: 900px) {
+  .notes-grid { grid-template-columns: 1fr; gap: 48px; }
+}
+
+.note-column {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.note-category {
+  border-top: 1px solid var(--accent);
+  padding-top: 24px;
+}
+.note-category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 32px;
+}
+.note-category-title {
+  font-family: var(--serif-en);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text);
+}
+.note-category-cn {
+  font-family: var(--serif-cn);
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 0.2em;
+}
+
+.note-item {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.note-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.note-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.note-item-title {
+  font-family: var(--serif-cn);
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+.note-item-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.note-item-quote {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+</style>
+
+<section class="section" id="notes">
+  <div class="section-header">
+    <div class="section-header-label">05 — What Shaped Me</div>
+    <h2 class="section-header-title">
+      What shaped me.
+      <span class="cn">美 学 坐 标</span>
+    </h2>
+  </div>
+  
+  <p class="notes-intro">
+    作为影视从业者，我有我的趣味谱系。<br>
+    这些作品共同塑造了我思考影像与故事的方式——<br>
+    它们教会我看到的不只是故事，更是故事如何被讲出来的方式。
+  </p>
+  
+  <div class="notes-grid">
+    <div class="note-column">
+      
+      <div class="note-category">
+        <div class="note-category-header">
+          <div class="note-category-title">Cinema</div>
+          <div class="note-category-cn">电 影</div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《切腹》· 小林正樹</div>
+            <div class="note-item-meta">1962</div>
+          </div>
+          <div class="note-item-quote">
+            "日式武士道美学的巅峰，动与静的极致辩证——长镜头里的沉默，比刀光剑影更致命。"
+          </div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《乱》· 黒澤明</div>
+            <div class="note-item-meta">1985</div>
+          </div>
+          <div class="note-item-quote">
+            "色彩与场面调度的王者之作。权力斗争在本片中以色谱的形式展开。"
+          </div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《十诫》· Krzysztof Kieślowski</div>
+            <div class="note-item-meta">1988–89</div>
+          </div>
+          <div class="note-item-quote">
+            "在华沙灰色公寓楼之间，基氏回应时代的道德焦虑，用影像完成了'混凝土诗学'。"
+          </div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《恐怖分子》· 楊德昌</div>
+            <div class="note-item-meta">1986</div>
+          </div>
+          <div class="note-item-quote">
+            "表面冷静的现代都市寓言，镜头平静得像玻璃，却能在不经意处划开观众的心。"
+          </div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《老男孩》· 박찬욱</div>
+            <div class="note-item-meta">2003</div>
+          </div>
+          <div class="note-item-quote">
+            "我的电影启蒙。现代所有视听技巧被压进这部浓烈、失控又精密的电影。"
+          </div>
+        </div>
+      </div>
+      
+      <div class="note-category">
+        <div class="note-category-header">
+          <div class="note-category-title">Series</div>
+          <div class="note-category-cn">剧 集</div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《漫长的季节》· 辛爽</div>
+            <div class="note-item-meta">2023</div>
+          </div>
+          <div class="note-item-quote">
+            "衣衫褴褛，不停旋转，浩瀚而悲伤。再回首，我们依然向前看。"
+          </div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《Severance》· Ben Stiller</div>
+            <div class="note-item-meta">2022</div>
+          </div>
+          <div class="note-item-quote">
+            "企业异化寓言的视觉化教案，美术与叙事完全咬合。"
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div class="note-column">
+      
+      <div class="note-category">
+        <div class="note-category-header">
+          <div class="note-category-title">Games</div>
+          <div class="note-category-cn">游 戏</div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《塞尔达传说：旷野之息》· 任天堂</div>
+            <div class="note-item-meta">2017</div>
+          </div>
+          <div class="note-item-quote">
+            "风、草、远山，一种没有台词的环境叙事。"
+          </div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《黑神话：悟空》· 游戏科学</div>
+            <div class="note-item-meta">2024</div>
+          </div>
+          <div class="note-item-quote">
+            "重新定义电子游戏中东方美学的范式。"
+          </div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《合金装备 3：食蛇者》· 小島秀夫</div>
+            <div class="note-item-meta">2004</div>
+          </div>
+          <div class="note-item-quote">
+            "冷战丛林里的一场悲剧——小岛秀夫证明了游戏可以承载作者性表达。"
+          </div>
+        </div>
+        
+      </div>
+      
+      <div class="note-category">
+        <div class="note-category-header">
+          <div class="note-category-title">Animation &amp; Manga</div>
+          <div class="note-category-cn">动 漫 · 漫 画</div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《火鳥》· 手塚治虫</div>
+            <div class="note-item-meta">1954–88</div>
+          </div>
+          <div class="note-item-quote">
+            "跨越文明、物种与时间尺度的终极叙事野心——漫画作为一种媒介拥有了'电影感'。"
+          </div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《磁力玫瑰》· 大友克洋</div>
+            <div class="note-item-meta">1995</div>
+          </div>
+          <div class="note-item-quote">
+            "太空歌剧外壳下的一场幽灵叙事——大友克洋对怀旧、影像的执念。"
+          </div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《守望者》· Alan Moore &amp; Dave Gibbons</div>
+            <div class="note-item-meta">1986–87</div>
+          </div>
+          <div class="note-item-quote">
+            "漫画第一次真正被当作一种成人的严肃叙事媒介。"
+          </div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《恶魔人 Crybaby》· 湯浅政明</div>
+            <div class="note-item-meta">2018</div>
+          </div>
+          <div class="note-item-quote">
+            "用动画的非写实语言完成了一场关于人性的末世审判。"
+          </div>
+        </div>
+        
+        <div class="note-item">
+          <div class="note-item-header">
+            <div class="note-item-title">《千年女優》· 今敏</div>
+            <div class="note-item-meta">2001</div>
+          </div>
+          <div class="note-item-quote">
+            "将电影史作为形式，以电影语言作为基础而又引领动画超越电影语言。"
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     CONTACT
+============================================ -->
+<style>
+.contact-section {
+  padding: 160px var(--pad-x) 100px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+.contact-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.contact-headline {
+  font-family: var(--serif-en);
+  font-weight: 300;
+  font-size: clamp(40px, 7vw, 88px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 48px;
+}
+.contact-headline em {
+  font-style: italic;
+  color: var(--accent);
+  font-family: var(--serif-en);
+}
+
+.contact-channels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 48px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+}
+.contact-channel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.contact-channel-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.contact-channel-value {
+  font-family: var(--serif-cn);
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 400;
+}
+.contact-channel-value a {
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+}
+
+.footer {
+  padding: 40px var(--pad-x);
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  border-top: 1px solid var(--line-soft);
+}
+</style>
+
+<section class="contact-section" id="contact">
+  <div class="contact-label">07 — Get in touch</div>
+  <h2 class="contact-headline">
+    Let's make<br>
+    <em>something</em> together.
+  </h2>
+  
+  <div class="contact-channels">
+    <div class="contact-channel">
+      <div class="contact-channel-label">Email</div>
+      <div class="contact-channel-value"><a href="mailto:1450600783@qq.com">1450600783@qq.com</a></div>
+    </div>
+    <div class="contact-channel">
+      <div class="contact-channel-label">Phone</div>
+      <div class="contact-channel-value">+86 177 9834 0336</div>
+    </div>
+    <div class="contact-channel">
+      <div class="contact-channel-label">Bilibili</div>
+      <div class="contact-channel-value"><a href="https://space.bilibili.com/3546982243109694" target="_blank">@Mage-</a></div>
+    </div>
+    <div class="contact-channel">
+      <div class="contact-channel-label">WeChat Blog</div>
+      <div class="contact-channel-value">Mage 的幻想壁橱</div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  © 2026 ZHU DELIN · PORTFOLIO · BEIJING
+</footer>
+
+<!-- ============================================
+     CUSTOM CURSOR
+============================================ -->
+<script>
+(function() {
+  if (matchMedia('(hover: none)').matches) return;
+  const cursor = document.getElementById('custom-cursor');
+  if (!cursor) return;
+  
+  let x = 0, y = 0, tx = 0, ty = 0;
+  
+  document.addEventListener('mousemove', (e) => {
+    tx = e.clientX;
+    ty = e.clientY;
+  });
+  
+  function tick() {
+    // smooth lerp towards target for soft trailing feel
+    x += (tx - x) * 0.22;
+    y += (ty - y) * 0.22;
+    cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    requestAnimationFrame(tick);
+  }
+  tick();
+  
+  // Enlarge on interactive elements
+  const hoverables = 'a, button, .letter, .char, .hero-tagline, .hero-label, .hero-meta-item, .identity-tag, .work-stage, .scratch-stage-btn, .workflow-stage, .bili-link, .ltm-cover-trigger, .nav-links a';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(hoverables)) cursor.classList.add('hover');
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(hoverables)) cursor.classList.remove('hover');
+  });
+})();
+</script>
+
+<!-- ============================================
+     PARTICLE SCRATCH CANVAS — scratches reveal filmmaker tool shapes
+============================================ -->
+<script>
+(function() {
+  const canvas = document.getElementById('profile-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  let W = 0, H = 0;
+  const DPR = window.devicePixelRatio || 1;
+  
+  // ---- state ----
+  let mx = -9999, my = -9999;
+  let mouseInside = false;
+  let currentShape = 'clapperboard';  // default
+  let revealMap = null;  // per-particle "reveal" amount (0..1)
+  let shapeTargets = {};  // shape name → target positions per particle
+  
+  // Particles arranged in a quiet regular grid (the "sand")
+  let particles = [];
+  const GRID_STEP = 8;
+  
+  class P {
+    constructor(x, y) {
+      this.hx = x; this.hy = y;   // home position on grid
+      this.x = x;  this.y = y;    // current position
+      this.vx = 0; this.vy = 0;
+      this.phase = Math.random() * Math.PI * 2;
+      this.baseSize = 0.6 + Math.random() * 0.35;
+      this.baseAlpha = 0.22 + Math.random() * 0.15;
+    }
+  }
+  
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    W = rect.width;
+    H = rect.height;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(DPR, DPR);
+    
+    // build grid particles
+    particles = [];
+    const cols = Math.floor(W / GRID_STEP);
+    const rows = Math.floor(H / GRID_STEP);
+    const offX = (W - cols * GRID_STEP) / 2 + GRID_STEP / 2;
+    const offY = (H - rows * GRID_STEP) / 2 + GRID_STEP / 2;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const jx = (Math.random() - 0.5) * 1.6;
+        const jy = (Math.random() - 0.5) * 1.6;
+        particles.push(new P(offX + c * GRID_STEP + jx, offY + r * GRID_STEP + jy));
+      }
+    }
+    
+    buildShapes();
+    revealMap = new Float32Array(particles.length);
+  }
+  
+  // ---- shapes ----
+  // Each shape = function that returns a black/white mask canvas; particles inside the white area have target positions there.
+  function makeMask(drawFn) {
+    const mc = document.createElement('canvas');
+    mc.width = W;
+    mc.height = H;
+    const mctx = mc.getContext('2d');
+    mctx.fillStyle = '#fff';
+    drawFn(mctx);
+    return mctx.getImageData(0, 0, W, H).data;
+  }
+  
+  function buildShapes() {
+    shapeTargets = {};
+    const cx = W / 2;
+    const cy = H / 2;
+    const scale = Math.min(W, H) / 520;
+    
+    // CLAPPERBOARD (场记板)
+    shapeTargets.clapperboard = {
+      mask: makeMask((g) => {
+        g.save();
+        g.translate(cx, cy + 10 * scale);
+        g.rotate(-0.04);
+        // body
+        g.fillRect(-150 * scale, -30 * scale, 300 * scale, 160 * scale);
+        // top arm
+        g.save();
+        g.translate(-155 * scale, -40 * scale);
+        g.rotate(-0.08);
+        g.fillRect(0, 0, 310 * scale, 32 * scale);
+        g.restore();
+        // diagonal stripes on top arm (holes)
+        g.save();
+        g.translate(-155 * scale, -40 * scale);
+        g.rotate(-0.08);
+        g.globalCompositeOperation = 'destination-out';
+        for (let i = 0; i < 6; i++) {
+          g.save();
+          g.translate(30 * scale + i * 48 * scale, 0);
+          g.rotate(0.35);
+          g.fillRect(-8 * scale, -4 * scale, 16 * scale, 40 * scale);
+          g.restore();
+        }
+        g.globalCompositeOperation = 'source-over';
+        g.restore();
+        // body holes (simulate text lines)
+        g.globalCompositeOperation = 'destination-out';
+        for (let i = 0; i < 4; i++) {
+          g.fillRect(-120 * scale, -10 * scale + i * 32 * scale, 240 * scale, 6 * scale);
+        }
+        g.globalCompositeOperation = 'source-over';
+        g.restore();
+      })
+    };
+    
+    // CAMERA (摄影机)
+    shapeTargets.camera = {
+      mask: makeMask((g) => {
+        g.save();
+        g.translate(cx, cy + 10 * scale);
+        // body
+        g.fillRect(-120 * scale, -50 * scale, 200 * scale, 110 * scale);
+        // lens (big circle in front)
+        g.beginPath();
+        g.arc(80 * scale, 5 * scale, 58 * scale, 0, Math.PI * 2);
+        g.fill();
+        // lens inner hole
+        g.globalCompositeOperation = 'destination-out';
+        g.beginPath();
+        g.arc(80 * scale, 5 * scale, 30 * scale, 0, Math.PI * 2);
+        g.fill();
+        g.globalCompositeOperation = 'source-over';
+        // lens inner dot
+        g.beginPath();
+        g.arc(80 * scale, 5 * scale, 12 * scale, 0, Math.PI * 2);
+        g.fill();
+        // top viewfinder cube
+        g.fillRect(-90 * scale, -90 * scale, 60 * scale, 42 * scale);
+        // handle on top
+        g.fillRect(-40 * scale, -110 * scale, 120 * scale, 8 * scale);
+        // reel mount on top-right (simulating old film camera)
+        g.beginPath();
+        g.arc(30 * scale, -70 * scale, 25 * scale, 0, Math.PI * 2);
+        g.fill();
+        g.globalCompositeOperation = 'destination-out';
+        g.beginPath();
+        g.arc(30 * scale, -70 * scale, 10 * scale, 0, Math.PI * 2);
+        g.fill();
+        g.globalCompositeOperation = 'source-over';
+        // tripod stem below
+        g.fillRect(-12 * scale, 60 * scale, 24 * scale, 12 * scale);
+        g.restore();
+      })
+    };
+    
+    // EDIT DESK (剪辑台 — keyboard + monitor + timeline)
+    shapeTargets.editor = {
+      mask: makeMask((g) => {
+        g.save();
+        g.translate(cx, cy + 10 * scale);
+        // monitor
+        g.fillRect(-150 * scale, -110 * scale, 300 * scale, 150 * scale);
+        // monitor inner (cut out, then add timeline bars + waveform)
+        g.globalCompositeOperation = 'destination-out';
+        g.fillRect(-138 * scale, -98 * scale, 276 * scale, 126 * scale);
+        g.globalCompositeOperation = 'source-over';
+        // timeline bars (3 tracks)
+        const tlY = -80 * scale;
+        const tlH = 14 * scale;
+        const tlGap = 10 * scale;
+        const tlX = -120 * scale;
+        const tlW = 240 * scale;
+        // track 1 — continuous
+        g.fillRect(tlX, tlY, tlW, tlH);
+        // track 2 — segmented
+        g.fillRect(tlX, tlY + tlH + tlGap, tlW * 0.35, tlH);
+        g.fillRect(tlX + tlW * 0.4, tlY + tlH + tlGap, tlW * 0.25, tlH);
+        g.fillRect(tlX + tlW * 0.7, tlY + tlH + tlGap, tlW * 0.3, tlH);
+        // track 3 — continuous smaller
+        g.fillRect(tlX, tlY + 2 * (tlH + tlGap), tlW * 0.75, tlH);
+        // playhead line
+        g.fillRect(tlX + tlW * 0.5 - 1 * scale, tlY - 4 * scale, 2 * scale, tlH * 3 + tlGap * 2 + 8 * scale);
+        // monitor stand
+        g.fillRect(-18 * scale, 40 * scale, 36 * scale, 20 * scale);
+        g.fillRect(-60 * scale, 60 * scale, 120 * scale, 8 * scale);
+        g.restore();
+      })
+    };
+    
+    // Sample each mask: for each particle, find its closest mask pixel and set target
+    for (const key of Object.keys(shapeTargets)) {
+      const mask = shapeTargets[key].mask;
+      const white = [];
+      for (let y = 0; y < H; y += 2) {
+        for (let x = 0; x < W; x += 2) {
+          const i = (y * W + x) * 4;
+          if (mask[i] > 128) {
+            white.push([x, y]);
+          }
+        }
+      }
+      // assign random mapping — particles pick a white pixel near their home
+      const targets = new Float32Array(particles.length * 2);
+      for (let pi = 0; pi < particles.length; pi++) {
+        const p = particles[pi];
+        // pick a random white pixel — produces a pleasing "scatter into shape" effect
+        const pick = white[Math.floor(Math.random() * white.length)];
+        if (pick) {
+          targets[pi * 2] = pick[0] + (Math.random() - 0.5) * 3;
+          targets[pi * 2 + 1] = pick[1] + (Math.random() - 0.5) * 3;
+        } else {
+          targets[pi * 2] = p.hx;
+          targets[pi * 2 + 1] = p.hy;
+        }
+      }
+      shapeTargets[key].targets = targets;
+    }
+  }
+  
+  resize();
+  window.addEventListener('resize', resize);
+  
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mx = e.clientX - rect.left;
+    my = e.clientY - rect.top;
+    mouseInside = true;
+  });
+  canvas.addEventListener('mouseleave', () => {
+    mouseInside = false;
+    mx = -9999;
+    my = -9999;
+  });
+  canvas.addEventListener('mouseenter', () => {
+    mouseInside = true;
+  });
+  
+  // ---- identity tag buttons control the shape ----
+  const shapeMap = {
+    'Filmmaker': 'camera',
+    'AI Director': 'clapperboard',
+    'Editor': 'editor',
+    'Designer': 'editor',
+    'Writer': 'clapperboard',
+    'Researcher': 'camera'
+  };
+  document.querySelectorAll('.identity-tag').forEach(tag => {
+    tag.classList.add('scratch-stage-btn');
+    tag.addEventListener('click', () => {
+      const label = tag.textContent.trim();
+      if (shapeMap[label]) {
+        currentShape = shapeMap[label];
+        document.querySelectorAll('.identity-tag').forEach(t => t.classList.remove('active'));
+        tag.classList.add('active');
+      }
+    });
+  });
+  // default active tag
+  const defaultTag = document.querySelectorAll('.identity-tag')[0];
+  if (defaultTag) defaultTag.classList.add('active');
+  
+  // ---- animation ----
+  function animate(t) {
+    ctx.clearRect(0, 0, W, H);
+    
+    // Very subtle background
+    const grad = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W, H) * 0.7);
+    grad.addColorStop(0, 'rgba(22, 20, 14, 0.4)');
+    grad.addColorStop(1, 'rgba(6, 6, 6, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+    
+    const shape = shapeTargets[currentShape];
+    const targets = shape ? shape.targets : null;
+    
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      
+      // Reveal zone: distance from mouse
+      let reveal = 0;
+      if (mouseInside && targets) {
+        const dx = p.hx - mx;
+        const dy = p.hy - my;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        // Reveal radius ~ 120px
+        if (d < 120) {
+          reveal = 1 - d / 120;
+          reveal = reveal * reveal; // ease-in
+        }
+      }
+      
+      // Smoothly approach current reveal
+      revealMap[i] += (reveal - revealMap[i]) * 0.12;
+      
+      let targetX, targetY;
+      if (targets && revealMap[i] > 0.001) {
+        const tx = targets[i * 2];
+        const ty = targets[i * 2 + 1];
+        targetX = p.hx + (tx - p.hx) * revealMap[i];
+        targetY = p.hy + (ty - p.hy) * revealMap[i];
+      } else {
+        targetX = p.hx;
+        targetY = p.hy;
+      }
+      
+      // Home breathing (tiny drift)
+      const b1 = Math.sin(t * 0.0006 + p.phase) * 0.5;
+      const b2 = Math.cos(t * 0.0004 + p.phase * 1.3) * 0.5;
+      targetX += b1;
+      targetY += b2;
+      
+      // spring to target
+      p.vx += (targetX - p.x) * 0.08;
+      p.vy += (targetY - p.y) * 0.08;
+      p.vx *= 0.75;
+      p.vy *= 0.75;
+      p.x += p.vx;
+      p.y += p.vy;
+      
+      // draw
+      const isRevealed = revealMap[i] > 0.08;
+      const alpha = p.baseAlpha + revealMap[i] * 0.75;
+      const size = p.baseSize + revealMap[i] * 0.7;
+      
+      ctx.globalAlpha = Math.min(1, alpha);
+      ctx.fillStyle = isRevealed ? '#c9b285' : '#b8b4ad';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+})();
+
+// ============================================
+//   AI Gala video hover/click-to-play
+// ============================================
+(function() {
+  const stage = document.getElementById('aigala-stage');
+  const still = document.getElementById('aigala-still');
+  const video = document.getElementById('aigala-video');
+  const hint = document.getElementById('aigala-hint');
+  if (!stage || !still || !video) return;
+  
+  let playing = false;
+  
+  function play() {
+    if (playing) return;
+    playing = true;
+    still.style.display = 'none';
+    video.style.display = 'block';
+    video.currentTime = 0;
+    const p = video.play();
+    if (p && p.catch) p.catch(() => {});
+    if (hint) hint.style.opacity = '0';
+  }
+  function stop() {
+    if (!playing) return;
+    playing = false;
+    video.pause();
+    video.style.display = 'none';
+    still.style.display = 'block';
+    if (hint) hint.style.opacity = '';
+  }
+  
+  stage.addEventListener('mouseenter', play);
+  stage.addEventListener('mouseleave', stop);
+  stage.addEventListener('click', () => { playing ? stop() : play(); });
+})();
+</script>
+
+</body>
+</html>
